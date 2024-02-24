@@ -14,8 +14,3 @@
 | 13th April - 1st May| Integrate the web app with Roxie endpoint to receive ranked cases from the cluster.|
 | 1st May - 30th May                   | Refine and fine-tune the entire project through meticulous testing and optimization.|
 | Till the end | Write Research paper. |
-
-
-
-
-## JUSTIFICATION FOR CHANGES FROM INITIAL PROPOSAL
