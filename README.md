@@ -1,8 +1,8 @@
-#Enhancing Legal Assistance through Data Enrichment with HPCC Systems
+# Enhancing Legal Assistance through Data Enrichment with HPCC Systems
 
 
-##TIMELINE
+## TIMELINE
 
 
 
-##JUSTIFICATION FOR CHANGES FROM INITIAL PROPOSAL
+## JUSTIFICATION FOR CHANGES FROM INITIAL PROPOSAL
