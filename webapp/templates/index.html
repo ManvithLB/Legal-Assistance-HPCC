@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legal NER Demo</title>
-    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,20 +51,27 @@
             margin-top: 20px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
-        li {
-            margin-bottom: 8px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-
     <h1>Legal NER Demo</h1>
-    
+
     <form id="textForm">
         <label for="text">Enter Text:</label>
         <textarea id="text" name="text" rows="5" cols="40"></textarea>
@@ -75,6 +81,9 @@
 
     <h2>Identified Entities:</h2>
     <ul id="entityList"></ul>
+
+    <h2>JSON Response:</h2>
+    <div id="jsonTable"></div>
 
     <script>
         function processText() {
@@ -94,11 +103,36 @@
                 var entityList = document.getElementById('entityList');
                 entityList.innerHTML = '';
 
+                var jsonResponseElement = document.getElementById('jsonTable');
+                jsonResponseElement.innerHTML = ''; // Clear previous content
+
+                // Render identified entities
                 data.forEach(entity => {
                     var listItem = document.createElement('li');
                     listItem.textContent = `${entity.text} - ${entity.label}`;
                     entityList.appendChild(listItem);
                 });
+
+                // Render JSON response as a table
+                var jsonTable = document.createElement('table');
+                var headers = Object.keys(data[0]);
+                var headerRow = jsonTable.insertRow(0);
+
+                headers.forEach(headerText => {
+                    var th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+
+                data.forEach(rowData => {
+                    var row = jsonTable.insertRow(-1);
+                    headers.forEach(header => {
+                        var cell = row.insertCell(-1);
+                        cell.textContent = rowData[header];
+                    });
+                });
+
+                jsonResponseElement.appendChild(jsonTable);
             });
         }
     </script>
