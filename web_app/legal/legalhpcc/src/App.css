@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  margin: auto;
+  width: 50%;
+  overflow-x: auto; 
+}
+
+.custom-selected{
+  display: flex;
+  flex-wrap: wrap;
+}
+.custom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* Increased space between tags */
+  margin-bottom: 12px; /* Added margin at the bottom */
+}
+
+.custom-tag {
+  margin-top: 12px;
+  margin-right: 5px;
+  background-color: #63bcfd;
+  color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px; /* Increased border radius */
+  padding: 8px; /* Increased padding */
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.custom-remove {
+  color: #010101;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.custom-tag-input {
+  margin-top: 12px; /* Moved input further down */
+}
+
+.custom-tag-input input {
+  border-radius: 20px; /* Increased border radius for input */
+  border: 1px solid #ddd;
+  font-size: 12px;
+  padding: 8px; /* Increased padding */
+  min-width: 150px;
+}

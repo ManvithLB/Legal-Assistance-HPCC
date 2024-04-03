@@ -1,0 +1,182 @@
+// App.tsx
+import React, { useState } from "react";
+import { Textarea, Button, VStack } from "@chakra-ui/react";
+import axios from "axios";
+import DataTable from "./components/DataTable"; // Assuming DataTable component is in DataTable.tsx
+
+// Define the ResponseData interface here or import it from DataTable.tsx if it's defined there
+interface ResponseData {
+  legal_roxie_searchResponse: {
+    Results: {
+      result_1: {
+        Row: {
+          priority: string;
+          text: string;
+        }[];
+      };
+    };
+  };
+}
+
+function App() {
+  const [text, setText] = useState("");
+  const [results, setResults] = useState<ResponseData | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post<ResponseData>(
+        "http://localhost:5000/process_text",
+        {
+          text,
+        }
+      );
+      console.log("Response from Flask:", response.data);
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  return (
+    <VStack p={4} spacing={4} align="stretch">
+      <Textarea
+        value={text}
+        onChange={handleChange}
+        placeholder="Enter text..."
+      />
+      <Button onClick={handleSubmit}>Submit</Button>
+      {results && <DataTable data={results} />}
+    </VStack>
+  );
+}
+
+export default App;
+
+
+
+
+//new 
+
+
+
+import React, { useState } from "react";
+import {
+  Textarea,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Button,
+  VStack,
+  HStack,
+  Badge,
+  CloseButton,
+} from "@chakra-ui/react";
+import axios from "axios";
+import sendRoxieRequest from "./components/sendRoxieRequest";
+import DataTable from "./components/DataTable";
+
+function App() {
+  const [text, setText] = useState("");
+  const [keywords, setKeywords] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [results, setResults] = useState(null);
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleAddKeyword = (keyword) => {
+    setKeywords([...keywords, keyword]);
+  };
+
+  const handleRemoveKeyword = (keywordToRemove) => {
+    const newKeywords = keywords.filter(
+      (keyword) => keyword !== keywordToRemove
+    );
+    setKeywords(newKeywords);
+    console.log("Keywords after removing:", newKeywords);
+    // Send request to Roxie with filtered keywords
+    // sendRoxieRequest(newKeywords);
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.post("http://localhost:5000/process_text", {
+        text,
+      });
+
+      const data = response.data;
+      setKeywords(data.keywords.split(", "));
+      // const responser = sendRoxieRequest(keywords);
+      // setResults(responser)
+    } catch (error) {
+      setError("An error occurred while processing the text.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendRoxieRequest = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.post("http://localhost:5000/sendroxie", {
+        keywords: keywords.join(", "),
+      });
+      console.log("Roxie Response:", response.data);
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error sending request to Roxie:", error);
+      setError("An error occurred while sending request to Roxie.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <VStack p={4} spacing={4} align="stretch">
+      <Textarea
+        value={text}
+        onChange={handleChange}
+        placeholder="Enter text..."
+      />
+      <Button onClick={handleSubmit} isLoading={loading}>
+        Submit
+      </Button>
+      {error && <p>{error}</p>}
+      <HStack spacing={2} flexWrap="wrap">
+        {keywords.map((keyword, index) => (
+          <Tag
+            key={index}
+            size="md"
+            borderRadius="full"
+            variant="solid"
+            colorScheme="blue"
+            mr={2}
+            mt={2}
+          >
+            <TagLabel>{keyword}</TagLabel>
+            <TagCloseButton onClick={() => handleRemoveKeyword(keyword)} />
+          </Tag>
+        ))}
+      </HStack>
+      <Button onClick={handleSendRoxieRequest} isLoading={loading}>
+        Send Request to Roxie
+      </Button>
+      {results && <DataTable data={results} />}
+    </VStack>
+  );
+}
+
+export default App;

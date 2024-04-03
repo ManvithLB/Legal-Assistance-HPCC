@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal NER Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Legal NER Demo</h1>
+
+    <form id="textForm">
+        <label for="text">Enter Text:</label>
+        <textarea id="text" name="text" rows="5" cols="40"></textarea>
+        <br>
+        <button type="button" onclick="processText()">Submit</button>
+    </form>
+
+    <h2>Identified Entities:</h2>
+    <ul id="entityList"></ul>
+
+    <h2>JSON Response:</h2>
+    <div id="jsonTable"></div>
+
+    <script>
+        function processText() {
+            var text = document.getElementById('text').value;
+
+            fetch('/process_text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'text': text
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var entityList = document.getElementById('entityList');
+                entityList.innerHTML = '';
+
+                var jsonResponseElement = document.getElementById('jsonTable');
+                jsonResponseElement.innerHTML = ''; // Clear previous content
+
+                // Render identified entities
+                data.forEach(entity => {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = `${entity.text} - ${entity.label}`;
+                    entityList.appendChild(listItem);
+                });
+
+                // Render JSON response as a table
+                var jsonTable = document.createElement('table');
+                var headers = Object.keys(data[0]);
+                var headerRow = jsonTable.insertRow(0);
+
+                headers.forEach(headerText => {
+                    var th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+
+                data.forEach(rowData => {
+                    var row = jsonTable.insertRow(-1);
+                    headers.forEach(header => {
+                        var cell = row.insertCell(-1);
+                        cell.textContent = rowData[header];
+                    });
+                });
+
+                jsonResponseElement.appendChild(jsonTable);
+            });
+        }
+    </script>
+</body>
+</html>
