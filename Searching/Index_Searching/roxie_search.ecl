@@ -1,4 +1,4 @@
-﻿IMPORT $;
+IMPORT $,STD;
 IMPORT PYTHON3 as PY;
 
 DATASET($.File_Legal.Layout3) test1(STRING T) := EMBED(PY)
@@ -15,7 +15,7 @@ EXPORT roxie_search() := FUNCTION
 
 STRING Tex := '' : STORED('Enter_Words_with_comma');
 
-base_df := $.File_Legal.File1;
+base_df := $.Build_Index_Text.df1;
 
 df2 := test1(Tex);
 
@@ -23,8 +23,10 @@ df1 := $.Build_Index_Words.df1;
 
 idx1 := $.Build_Index_Words.idx;
 
+idx2 := $.Build_Index_Text.idx;
+
 final_rec := RECORD
-UNSIGNED8 text_id;
+STRING5 text_id;
 STRING100 words;
 END;
 
@@ -42,18 +44,45 @@ END;
 
 final_tb := SORT(TABLE(final,new_rec,text_id),-count_id)[1..10];
 
-text_rec := RECORD
- UNSIGNED text_id;
- UNSIGNED count_id;
- STRING text;
+out_rec := RECORD
+STRING text_id;
+UNSIGNED2 count_id;
+STRING text;
 END;
 
-get_text := JOIN(final_tb,base_df,LEFT.text_id=RIGHT.text_id,
-                  TRANSFORM(text_rec,
-                  SELF := RIGHT,
-                  SELF := LEFT),
-                  INNER);
+out_rec doJoin2(final_tb le, base_df ri) := TRANSFORM
+ SELF := le;
+ SELF := ri;
+END;
 
-RETURN OUTPUT(get_text);
+out := JOIN(final_tb,base_df,LEFT.text_id=RIGHT.text_id,doJoin2(LEFT,RIGHT),KEYED(idx2));
+
+//Dictionary Method, but the problem is to build this dictionary everytime, it takes a lot of time
+
+// base_df_rec := RECORD
+// base_df.text_id;
+// base_df.text;
+// END;
+
+// tb := TABLE(base_df,base_df_rec,text_id,text);
+
+// dct := DICTIONARY(tb,{text_id => text});
+
+// Map_id_to_text(STRING text_id) := dct[text_id].text;
+
+// out_rec := RECORD
+// final_tb.text_id;
+// final_tb.count_id;
+// STRING text;
+// END;
+
+// out_rec doUpdate(final_tb le) := TRANSFORM
+ // SELF.text := Map_id_to_text(le.text_id);
+ // SELF := le;
+// END;
+
+// out := PROJECT(final_tb,doUpdate(LEFT));
+
+RETURN OUTPUT(out);
 
 END;
