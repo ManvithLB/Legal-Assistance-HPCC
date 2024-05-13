@@ -23,21 +23,36 @@ corpus, allowing for effective retrieval of context-aware information.
 ## Steps to Run Webapp
 
 1. Clone this repo to your local system and change current directory.
+
    * ```git clone https://github.com/ManvithLB/Legal-Assistance-HPCC.git```
    * ```cd Legal-Assistance-HPCC/web_app/```
+    
 2. Run the Flask backend by navigating to ```cd Legal-Assistance-HPCC/web_app/nerspacy/webapp```. Once Navigated run the program by
    ```phyton3 myapp.py```. Upon successfuly execution terminal must look similar to the image below
+   
     ![alt text](Images/flask.png "Flask Terminal")
+   
 3. Navigate to ```cd Legal-Assistance-HPCC/web_app/legal/legalhpcc```.
+   
 4. Install the node dependecies by ```npm install```.
+   
 5. Run the node app: ```npm run dev```
+   
 6. Open the localhost link ![alt text](Images/rundev.png "npm run dev")
+    
 7. The webapp has two enteries, one to enter the text in raw form, another entry to enter keywords directly.
+    
   ![alt text](Images/webapp.png "Webapp")
+
 8. Enter text and click on **Submit** to generate relevant keywords. Click on **Send Request to Roxie** to send keywords to Roxie and obtain the relevant output.
 
 ## Results
-Output obtained appears as ![alt text](Images/SampleEntry.png "Sample"). 10 most relevant cases are shown as output. Each output is abridged, extended version can be obtained on clicking on view more.
+![alt text](Images/SampleEntry.png "Sample")
+
+*Output obtained appears as above. 
+*Keywords can be removed or added for more accurate searching.
+*10 most relevant cases are shown as output. 
+*Each output is abridged, extended version can be obtained on clicking on view more.
 
 
 
