@@ -49,10 +49,10 @@ corpus, allowing for effective retrieval of context-aware information.
 ## Results
 ![alt text](Images/SampleEntry.png "Sample")
 
-*Output obtained appears as above. 
-*Keywords can be removed or added for more accurate searching.
-*10 most relevant cases are shown as output. 
-*Each output is abridged, extended version can be obtained on clicking on view more.
+* Output obtained appears as above. 
+* Keywords can be removed or added for more accurate searching.
+* 10 most relevant cases are shown as output. 
+* Each output is abridged, extended version can be obtained on clicking on view more.
 
 
 
