@@ -13,7 +13,7 @@ corpus, allowing for effective retrieval of context-aware information.
 
 1. **Python 3.10** : Ensure that pyhton 3.10 or greater is installed. You can download it from [python.org](https://www.python.org/downloads)
 2. **Install Python Depenendicies**:  Install the required Python dependencies using pip:
-  ''' pip install -r requirements.txt '''
+   ``` pip install -r requirements.txt ```
 3. **Install Node.js**: Ensure you have Node.js installed on your machine. If not, download and install it from [nodejs.org](https://nodejs.org/en).
 
 ##Steps to Run 
