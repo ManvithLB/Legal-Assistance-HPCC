@@ -3,4 +3,4 @@
 IMPORT $;
 
 $.Build_Index_Words.build_idx;
-$.Build_Index_Text.build_idx;
+
