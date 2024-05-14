@@ -49,21 +49,13 @@ final_tb := SORT(TABLE(final,new_rec,text_id),-count_id)[1..10];
 base_df := $.File_Legal.File1;
 
 DATASET(rec1) merge_df(DATASET(new_rec) final_tb) := EMBED(PY)
-
-#import pandas as pd
+  
 import csv
 import sys
 
 csv.field_size_limit(sys.maxsize)
 
 final_tb = [(int(text_id), int(count_id)) for text_id, count_id in final_tb]
-
-#sentences_df = pd.read_csv("/var/lib/HPCCSystems/mydropzone/ILDC_multi_text_id.csv")
-#sentences_df = sentences_df.iloc[:, 1:]
-
-#base_df = [tuple(row) for row in sentences_df.to_records(index=False)]
-
-#text_id_to_text = {text_id: text for text_id, text in base_df}
 
 sentences_file = "/var/lib/HPCCSystems/mydropzone/ILDC_multi_text_id.csv"
 
