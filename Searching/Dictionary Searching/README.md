@@ -10,6 +10,6 @@ The only disadvantage in this method is that, whenever the ROXIE query is called
 2. Clone this repository. Type this in your terminal: ```git clone https://github.com/ManvithLB/Legal-Assistance-HPCC.git```
 3. Open ECL watch, and upload the case statement dataset with the text_id, and the extracted keywords dataset on the Landing Zone.
 4. Now create a csv file with the following contents: ```Section 18,Civil Appeal,West Bengal,Central Commission,Article 16  4  and 16  4-A,Section 3 7  ,Schedule B,IPC,Section 34,Arms Act,Domicile```. These are also uploaded and sprayed to the cluster under the name ```legal::test_words```. These are used as test words.
-5. Now, open the current folder in your ECL IDE or VSCode, and run ```Build_indexes.ecl``` to build the indexe for the keywords dataset.
+5. Now, open the current folder in your ECL IDE or VSCode, and run ```Build_index.ecl``` to build the indexe for the keywords dataset.
 6. Then open ```roxie_search.ecl``` file, and compile the code using ROXIE. In your ECL watch, open the compiled workunit, and publish your query. You can name it whatever you like.
 7. Next open your published ROXIE query, enter some test words separated by comma. These keywords will be searched, and the relavent case statements are provided as output.
