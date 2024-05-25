@@ -1,17 +1,19 @@
-IMPORT $,STD;
+IMPORT $;
 IMPORT PYTHON3 as PY;
 
 DATASET($.File_Legal.Layout3) test1(STRING T) := EMBED(PY)
   
 words_list = T.split(',')
 
-tuple_result = tuple(words_list) 
+lower_case_list = [word.lower() for word in words_list]  
+
+tuple_result = tuple(lower_case_list) 
  
 return tuple_result;
   
 ENDEMBED;
 
-EXPORT roxie_search() := FUNCTION
+EXPORT roxie_index_search() := FUNCTION
 
 STRING Tex := '' : STORED('Enter_Words_with_comma');
 
@@ -27,7 +29,7 @@ idx2 := $.Build_Index_Text.idx;
 
 final_rec := RECORD
 STRING5 text_id;
-STRING100 words;
+STRING100 words_lower;
 END;
 
 final_rec doJoin(df2 le, df1 ri) := TRANSFORM
@@ -35,7 +37,7 @@ final_rec doJoin(df2 le, df1 ri) := TRANSFORM
  SELF := ri;
 END;
 
-final := JOIN(df2,df1,LEFT.words=RIGHT.words,doJoin(LEFT,RIGHT),KEYED(idx1));
+final := JOIN(df2,df1,LEFT.words_lower=RIGHT.words_lower,doJoin(LEFT,RIGHT),KEYED(idx1));
 
 new_rec := RECORD
 final.text_id;
@@ -56,32 +58,6 @@ out_rec doJoin2(final_tb le, base_df ri) := TRANSFORM
 END;
 
 out := JOIN(final_tb,base_df,LEFT.text_id=RIGHT.text_id,doJoin2(LEFT,RIGHT),KEYED(idx2));
-
-//Dictionary Method, but the problem is to build this dictionary everytime, it takes a lot of time
-
-// base_df_rec := RECORD
-// base_df.text_id;
-// base_df.text;
-// END;
-
-// tb := TABLE(base_df,base_df_rec,text_id,text);
-
-// dct := DICTIONARY(tb,{text_id => text});
-
-// Map_id_to_text(STRING text_id) := dct[text_id].text;
-
-// out_rec := RECORD
-// final_tb.text_id;
-// final_tb.count_id;
-// STRING text;
-// END;
-
-// out_rec doUpdate(final_tb le) := TRANSFORM
- // SELF.text := Map_id_to_text(le.text_id);
- // SELF := le;
-// END;
-
-// out := PROJECT(final_tb,doUpdate(LEFT));
 
 RETURN OUTPUT(out);
 
