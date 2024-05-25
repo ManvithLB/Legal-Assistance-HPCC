@@ -1,4 +1,4 @@
-﻿EXPORT Build_Index_Text := MODULE
+EXPORT Build_Index_Text := MODULE
 
 base_df := $.File_Legal.File1;
 
