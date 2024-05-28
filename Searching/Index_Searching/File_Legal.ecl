@@ -12,9 +12,10 @@ EXPORT File_Legal := MODULE
   STRING2 field1;
   STRING8 text_id;
   STRING500 words;
+  STRING100 label
  END;
  
- EXPORT File2 := DATASET('~legal::ildc_multi_words',Layout2,CSV);
+ EXPORT File2 := DATASET('~legal::ildc_multi_concatinated_words',Layout2,CSV);
  
  EXPORT Layout3 := RECORD
   STRING100 words_lower;
@@ -28,6 +29,6 @@ EXPORT File_Legal := MODULE
   STRING500 words_lower;
  END;
  
- EXPORT File4 := DATASET('~spr::legal::words_lower',Layout4,THOR);
+ EXPORT File4 := DATASET('~legal::concat_words_lower',Layout4,THOR);
  
 END;
