@@ -2,7 +2,7 @@
 This Folder contains the different methods used for searching the relevant case statements from the keywords provided. We have used different approaches, and the ```Indexed Searching``` takes the shortest time in providing the result.<br><br>
 All the methods give the same output for a given set of keywords.
 ## Base Dataset for Searching
-This repository has a file ```Spacy_Word_Extact.ipynb```. This Google Colab file is used to extract all the required keywords from the original ```ILDC Multi Dataset```, and this is saved as a csv file named ```ILDC_multi_concatinated_words.csv```, which has 1244044 extracted keywords.
+This repository has a file ```Spacy_Word_Extact.ipynb```. This Google Colab file is used to extract all the required keywords from the original ```ILDC Multi Dataset```, and this is saved as a csv file named ```ILDC_multi_concatinated_words.csv```, which has 12,44,044 extracted keywords.
 ## Steps for running it on a cluster
 
 1. Install the dataset from the link provided in this github repository. You can find the link in the ```RelaventLinks.txt``` file.
