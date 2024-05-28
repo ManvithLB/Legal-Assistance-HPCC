@@ -1,12 +1,7 @@
-#OPTION('outputLimit',650);
+// #OPTION('outputLimit',650);
 IMPORT $,STD;
 
-rec1 := RECORD
-STRING text_id;
-STRING words;
-END;
-
-df1 := DATASET('~legal::words_with_id',rec1,THOR);
+df1 := $.File_Legal.File2;
 
 rec := RECORD
 df1.text_id;
@@ -23,4 +18,4 @@ END;
 
 df2 := PROJECT(tb1,doUpdate(LEFT));
 
-OUTPUT(df2,,'~legal::words_lower',OVERWRITE);
+OUTPUT(df2,,'~legal::concat_words_lower',OVERWRITE);
