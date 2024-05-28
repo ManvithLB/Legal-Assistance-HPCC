@@ -13,7 +13,7 @@ return tuple_result;
   
 ENDEMBED;
 
-EXPORT roxie_index_search() := FUNCTION
+EXPORT roxie_search() := FUNCTION
 
 STRING Tex := '' : STORED('Enter_Words_with_comma');
 
