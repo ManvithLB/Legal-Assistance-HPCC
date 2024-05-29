@@ -61,7 +61,7 @@ function App() {
     setError("");
     try {
       const response = await axios.post("http://localhost:5000/sendroxie", {
-        keywords: keywords.join(", "),
+        keywords: keywords.join("/ "),
       });
       setResults(response.data);
     } catch (error) {
