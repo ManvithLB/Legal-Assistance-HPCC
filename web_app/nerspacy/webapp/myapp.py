@@ -2,12 +2,13 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
 import spacy
 import requests
+import re
 
 app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-roxie_url = "http://university-roxie.us-hpccsystems-dev.azure.lnrsg.io:8002/WsEcl/json/query/roxie/legal_roxie_search"
+roxie_url = "http://university-roxie.us-hpccsystems-dev.azure.lnrsg.io:8002/WsEcl/json/query/roxie/roxie_index_search_2"
 
 # Roxie server Authorization header
 roxie_auth_header = {
@@ -33,10 +34,28 @@ def process_text():
     # Extract identified entities
     entities = [{'text': ent.text, 'label': ent.label_} for ent in doc.ents]
 
-    # Prepare the keywords string with commas
-    keywords = ", ".join([ent['text'] for ent in entities])
+    # Print entities and their labels to the console
+    for entity in entities:
+        print(f"Entity: {entity['text']}, Label: {entity['label']}")
 
-    return jsonify({"entities": entities, "keywords": keywords})
+    # Combine adjacent provisions and statutes, and remove the year from statutes
+    combined_entities = []
+    i = 0
+    while i < len(entities):
+        current_entity = entities[i]
+        if current_entity['label'] == 'PROVISION' and i + 1 < len(entities) and entities[i + 1]['label'] == 'STATUTE':
+            statute_text = re.sub(r'\b\d{4}\b', '', entities[i + 1]['text']).strip()
+            combined_text = f"{current_entity['text']} {statute_text}"
+            combined_entities.append({'text': combined_text, 'label': 'PROVISION_STATUTE'})
+            i += 2  # Skip the next entity as it is already combined
+        else:
+            combined_entities.append(current_entity)
+            i += 1
+
+    # Prepare the keywords string with commas
+    keywords = ", ".join([ent['text'] for ent in combined_entities])
+
+    return jsonify({"entities": combined_entities, "keywords": keywords})
 
 
 @app.route('/sendroxie', methods=['POST'])
