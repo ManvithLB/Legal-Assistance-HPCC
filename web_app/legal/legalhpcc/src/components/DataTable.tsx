@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
 
 interface ResponseData {
-  legal_roxie_searchResponse: {
+  roxie_index_search_2Response: {
     Results: {
       result_1: {
         Row: {
@@ -20,7 +20,7 @@ interface Props {
 
 const DataTable: React.FC<Props> = ({ data }) => {
   const extractedResults =
-    data?.legal_roxie_searchResponse?.Results?.result_1?.Row || [];
+    data?.roxie_index_search_2Response?.Results?.result_1?.Row || [];
 
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
