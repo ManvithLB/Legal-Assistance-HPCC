@@ -70,8 +70,8 @@ def send_roxie():
 
     try:
         payload = {
-            "legal_roxie_search": {
-                "enter_words_with_comma": keywords
+             "roxie_index_search_2": {
+               "enter_words_separated_by_forward_slash": keywords
             }
         }
 
@@ -79,8 +79,12 @@ def send_roxie():
             "Content-Type": "application/json",
             **roxie_auth_header
         }
-
+        
+        
         response = requests.post(roxie_url, json=payload, headers=headers)
+        # print("Response Status Code:", response.status_code)
+        # print("Response Headers:", response.headers)
+        # print("Response JSON:", response.json())
         roxie_data = response.json()
         return jsonify(roxie_data)
     except Exception as e:
