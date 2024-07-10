@@ -32,8 +32,7 @@ def process_text():
     doc = nlp(text)
 
     # Extract identified entities
-    entities = [{'text': ent.text, 'label': ent.label_} for ent in doc.ents]
-
+    entities = [{'text': ent.text, 'label': ent.label_} for ent in doc.ents if ent.label_ in {'COURT', 'PROVISION', 'STATUTE'}]
     # Print entities and their labels to the console
     for entity in entities:
         print(f"Entity: {entity['text']}, Label: {entity['label']}")
@@ -48,9 +47,11 @@ def process_text():
             combined_text = f"{current_entity['text']} {statute_text}"
             combined_entities.append({'text': combined_text, 'label': 'PROVISION_STATUTE'})
             i += 2  # Skip the next entity as it is already combined
-        else:
+        elif current_entity['label'] in {'COURT', 'PRECEDENT'}:
             combined_entities.append(current_entity)
             i += 1
+        else:
+            i += 1  # Skip standalone STATUTE or PROVISION
 
     # Prepare the keywords string with commas
     keywords = ", ".join([ent['text'] for ent in combined_entities])
